@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.offcn.dao.EmployeeDao">
+
+    <select id="findAllEmpBycondition" parameterType="map" resultType="map">
+        select e.*,d.dname  from employee e,dept d
+        
+        <where>
+            e.dfk = d.deptno
+
+           <choose>
+               <when test="eid!=null">
+                   and e.eid = #{eid}
+               </when>
+               <when test="ename!=null">
+                   and e.ename like "%"#{ename}"%"
+               </when>
+               <when test="esex!=null">
+                   and e.esex = #{esex}
+               </when>
+               <when test="eage!=null">
+                   and e.eage = #{eage}
+               </when>
+               <when test="telephone!=null">
+                   and e.telephone like "%"#{telephone}"%"
+               </when>
+               <when test="hiredate!=null">
+                   and e.hiredate like "%"#{hiredate}"%"
+               </when>
+               <when test="pnum!=null">
+                   and e.pnum like "%"#{pnum}"%"
+               </when>
+
+               <when test="remark!=null">
+                   and e.remark like "%"#{remark}"%"
+               </when>
+               <when test="dfk!=null">
+                   and e.dfk = #{dfk}
+               </when>
+
+               <when test="dname!=null">
+                   and d.dname like "%"#{dname}"%"
+               </when>
+           </choose>
+        </where>
+
+    </select>
+    
+    <select id="findColumnId" resultType="string">
+        select COLUMN_NAME from information_schema.COLUMNS
+            where table_schema='rbac' and table_name = 'employee';
+    </select>
+
+    <insert id="addEmployee" parameterType="map" useGeneratedKeys="true" keyColumn="eid" keyProperty="eid">
+        insert into employee (ename, esex, eage, telephone, hiredate, pnum, username, password, dfk,remark)
+        values (#{ename},#{esex},#{eage},#{telephone},#{hiredate},#{pnum},#{username},#{password},#{dfk},#{remark})
+    </insert>
+
+    <delete id="deleteEmp" >
+        delete from employee where eid = #{0}
+    </delete>
+
+    <select id="findEmpByEid" resultType="map">
+        select e.*,r.rolename,er.role_fk,er.erdis  from employee e,emp_role er,role r
+        where e.eid = er.emp_fk and er.role_fk = r.roleid and e.eid = #{0}
+    </select>
+
+    <update id="updataEmployee" parameterType="map">
+        update employee set ename = #{ename}, esex=#{esex},username=#{username},eage=#{eage},pnum=#{pnum},telephone=#{telephone},
+        remark=#{remark},hiredate=#{hiredate} where eid=#{eid}
+    </update>
+
+</mapper>

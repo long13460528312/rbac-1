@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.offcn.dao.LoginDao">
+
+    <select id="findEmpByUsernameAndPassword" resultType="com.offcn.bean.EmployeeBean" parameterType="com.offcn.bean.EmployeeBean">
+        select * from employee where username = #{username} and password = #{password}
+    </select>
+
+    <select id="findEmpByUsername" resultType="com.offcn.bean.EmployeeBean">
+        select * from employee where username = #{0}
+    </select>
+
+    <select id="findEmpMessageByUsername" resultType="map" >
+       select e.eid, e.ename, r.rolename,e.pic,s.name,s.url from employee e, role r,sources s,emp_role er,role_sources rs
+       where e.eid=er.emp_fk and er.role_fk = r.roleid and 
+       r.roleid=rs.role_fk and rs.resources_fk=s.id and e.username=#{0}
+
+    </select>
+
+    <insert id="add" parameterType="com.offcn.bean.EmployeeBean">
+       insert into employee (ename, esex, eage, telephone, hiredate, pnum, username, password, remark, dfk, pic)
+       values (#{ename},#{esex},#{eage},#{telephone},now(),#{pnum},#{username},#{password},#{remark},#{dfk},#{pic})
+
+    </insert>
+</mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.offcn.dao.EmproleDao">
+    <insert id="addEmpRole" parameterType="map">
+        insert into emp_role (role_fk, emp_fk,erdis) values (#{roleid},#{eid},#{erdis})
+    </insert>
+
+    <delete id="delteEmpRole" >
+        delete from emp_role where emp_fk = #{0}
+     </delete>
+
+    <update id="updataEmprole" parameterType="map">
+        update emp_role set role_fk=#{roleid},erdis=#{erdis} where emp_fk = #{eid};
+    </update>
+
+</mapper>
